@@ -10,6 +10,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -69,6 +70,42 @@
             border-color: #e8344e;
         }
     </style>
+    <script>
+        let word = '{{ word }}'
+        $(document).ready(function () {
+            get_definitions()
+        })
+
+        function get_definitions() {
+            $.ajax({
+                type: "GET",
+                url: `https://owlbot.info/api/v4/dictionary/${word}`,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Token 088e4f62de297fd96c900fd7b8f295d0836ada5e");
+                },
+                data: {},
+                error: function (xhr, status, error) {
+                    alert("에러 발생!");
+                },
+                success: function (response) {
+                    console.log(response)
+                    $("#word").text(response["word"])
+                    $("#pronunciation").text(`/${response["pronunciation"]}/`)
+                    let definitions = response["definitions"]
+                    $("#definitions").empty()
+                    for (let i = 0; i < definitions.length; i++) {
+                        let definition = definitions[i]
+                        let html_temp = `<div style="padding:10px">
+                                            <i>${definition["type"]}</i>
+                                            <br>${definition["definition"]}<br>
+                                            <span class="example">${definition["example"]}</span>
+                                        </div>`
+                        $("#definitions").append(html_temp)
+                    }
+                }
+            })
+        }
+    </script>
 </head>
 <body>
 <div class="wrap">
@@ -84,7 +121,9 @@
             <button id="btn-save" class="btn btn-outline-sparta btn-lg">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i>
             </button>
-            <button id="btn-delete" class="btn btn-sparta btn-lg">delete</button>
+            <button id="btn-delete" class="btn btn-sparta btn-lg">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
         </div>
         <hr>
         <div id="definitions">
