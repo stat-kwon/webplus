@@ -1,0 +1,40 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--    <script>-->
+<!--        function to_main() {-->
+<!--            window.location.href="/"-->
+<!--        }-->
+<!--    </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>상세 페이지</h1>-->
+<!--    <button onclick="to_main()">메인으로 돌아가기</button>-->
+<!--</body>-->
+<!--</html>-->
+
+<!--페이지 연결해보기 연습-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    
+</head>
+<body>
+<h1>상세 페이지</h1>
+<h3>받은 단어는 {{ word }}</h3>
+<button onclick='window.location.href="/"'>메인으로 돌아가기</button>
+<ul id="gu-list">
+    {% for row in rows %}
+    {% set gu_name = row["MSRSTE_NM"] %}
+    {% set gu_mise = row["IDEX_MVL"] %}
+        {% if gu_mise >= 60 %}
+    <li>{{ gu_name }}:{{ gu_mise|int }}</li>
+        {% endif %}
+    {% endfor %}
+</ul>
+</body>
+</html>
